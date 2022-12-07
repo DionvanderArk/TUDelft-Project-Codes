@@ -10,9 +10,16 @@ class Material():
         self.v = v
 
 class Fueltank():
-    def __init__(self, p, volume, material):
+    def __init__(self, p, V, material,SF,Fuel_mass):
         # Get the mass
-        pass
+
+        self.radius=(3*V/(4*math.pi))**(1/3)
+        self.material=material
+        self.thickness=(p*self.radius*SF)/(2*self.material.sigma_y)
+        self.area=4*math.pi*self.radius**2
+        self.vol=self.area*self.thickness
+        self.mass=self.vol*self.material.density
+        self.mass_tot=self.mass+Fuel_mass
     
   
 # For now it is just a thin walled square for easy
@@ -59,3 +66,6 @@ AM350    = Material(200e9, 1034e6, 7700, 0.33)  # ferrous alloy
 square_beam = Beam(0.1, 1e-3, 1, AL6061T6)
 print(square_beam.Ixx)
 print(square_beam.klat)
+
+LF_tank=Fueltank(tank_pressure,LF_Vol,AL6061T6,1.5,LF_mass)
+Ox_tank=Fueltank(tank_pressure,Ox_Vol,AL6061T6,1.5,Ox_mass)
